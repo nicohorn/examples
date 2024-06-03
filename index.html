@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo App</title>
+</head>
+<body>
+  <h1>Todo App</h1>
+  <input type="text" id="todoInput" placeholder="Enter a task">
+  <button id="addButton">Add</button>
+  <ul id="todoList"></ul>
+
+  <script>
+    class Todo {
+      constructor(title) {
+        this.title = title;
+        this.completed = false;
+      }
+
+      toggleCompleted() {
+        this.completed = !this.completed;
+      }
+    }
+
+    class TodoApp {
+      constructor() {
+        this.todos = [];
+        this.todoInput = document.getElementById('todoInput');
+        this.addButton = document.getElementById('addButton');
+        this.todoList = document.getElementById('todoList');
+
+        this.addButton.addEventListener('click', () => this.addTodo());
+      }
+
+      addTodo() {
+        const title = this.todoInput.value.trim();
+        if (title !== '') {
+          const todo = new Todo(title);
+          this.todos.push(todo);
+          this.renderTodos();
+          this.todoInput.value = '';
+        }
+      }
+
+      toggleTodo(index) {
+        this.todos[index].toggleCompleted();
+        this.renderTodos();
+      }
+
+      renderTodos() {
+        this.todoList.innerHTML = '';
+        this.todos.forEach((todo, index) => {
+          const li = document.createElement('li');
+          li.textContent = todo.title;
+          li.style.textDecoration = todo.completed ? 'line-through' : 'none';
+          li.addEventListener('click', () => this.toggleTodo(index));
+          this.todoList.appendChild(li);
+        });
+      }
+    }
+
+    const app = new TodoApp();
+  </script>
+</body>
+</html>
